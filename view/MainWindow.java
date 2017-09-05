@@ -59,8 +59,12 @@ public class MainWindow {
 			@Override
 			public void mouseUp(MouseEvent arg0) {
 				FileDialog fileOpen = new FileDialog(shlSplitMerge);
-				String part = fileOpen.open();
-				textInputFile.setText(part);				
+				try {
+					String part = fileOpen.open();
+					textInputFile.setText(part);
+				} catch (Exception e) {
+					// do nothing
+				}
 			}
 		});
 		buttonChooseFile.setBounds(603, 40, 30, 30);
@@ -78,8 +82,12 @@ public class MainWindow {
 			@Override
 			public void mouseUp(MouseEvent arg0) {
 				DirectoryDialog dirOpen = new DirectoryDialog(shlSplitMerge);
-				String part = dirOpen.open();
-				textOutputFolder.setText(part);
+				try {
+					String part = dirOpen.open();
+					textOutputFolder.setText(part);
+				} catch (Exception e) {
+					// do nothing
+				}
 			}
 		});
 		buttonChooseFolder.setBounds(603, 40, 30, 30);
