@@ -29,6 +29,8 @@ public class MainWindow {
 	private static Text textOutputFolder;
 	private static int splitBy;
 	private static int percent;
+	private static Text textMergeFileChoose;
+	private static Text textMergeFolderChoose;
 	/**
 	 * Launch the application.
 	 * @param args
@@ -45,10 +47,10 @@ public class MainWindow {
 		TabItem tabSplit = new TabItem(tabFolder, SWT.NONE);
 		tabSplit.setText("Split");
 		
-		Composite composite = new Composite(tabFolder, SWT.NONE);
-		tabSplit.setControl(composite);
+		Composite compositeSlpitTab = new Composite(tabFolder, SWT.NONE);
+		tabSplit.setControl(compositeSlpitTab);
 				
-		Group grpChooseFile = new Group(composite, SWT.NONE);
+		Group grpChooseFile = new Group(compositeSlpitTab, SWT.NONE);
 		grpChooseFile.setText("Choose File");
 		grpChooseFile.setBounds(10, 10, 643, 78);
 		
@@ -72,7 +74,7 @@ public class MainWindow {
 		buttonChooseFile.setBounds(603, 40, 30, 30);
 		buttonChooseFile.setText("...");
 		
-		Group grpChooseFolder = new Group(composite, SWT.NONE);
+		Group grpChooseFolder = new Group(compositeSlpitTab, SWT.NONE);
 		grpChooseFolder.setText("Choose Folder");
 		grpChooseFolder.setBounds(10, 94, 643, 78);
 		
@@ -95,7 +97,7 @@ public class MainWindow {
 		buttonChooseFolder.setBounds(603, 40, 30, 30);
 		buttonChooseFolder.setText("...");
 		
-		Group grpChoose = new Group(composite, SWT.NONE);
+		Group grpChoose = new Group(compositeSlpitTab, SWT.NONE);
 		grpChoose.setText("Choose");
 		grpChoose.setBounds(10, 178, 643, 119);
 		
@@ -137,11 +139,11 @@ public class MainWindow {
 		lblMbmegaByte.setBounds(265, 78, 140, 20);
 		lblMbmegaByte.setText("MB (Mega Byte)");
 		
-		ProgressBar progressBar = new ProgressBar(composite, SWT.NONE);
+		ProgressBar progressBar = new ProgressBar(compositeSlpitTab, SWT.NONE);
 		progressBar.setMaximum(100);
 		progressBar.setBounds(10, 414, 643, 21);
 		
-		Button btnSplit = new Button(composite, SWT.NONE);
+		Button btnSplit = new Button(compositeSlpitTab, SWT.NONE);
 		
 		
 		// Split button
@@ -192,6 +194,64 @@ public class MainWindow {
 		
 		TabItem tabMerge = new TabItem(tabFolder, SWT.NONE);
 		tabMerge.setText("Merge");
+		
+		Composite composite = new Composite(tabFolder, SWT.NONE);
+		tabMerge.setControl(composite);
+		
+		Group grpMergeFile = new Group(composite, SWT.NONE);
+		grpMergeFile.setText("Choose File");
+		grpMergeFile.setBounds(10, 10, 643, 78);
+		
+		textMergeFileChoose = new Text(grpMergeFile, SWT.BORDER);
+		textMergeFileChoose.setBounds(10, 42, 587, 26);
+		
+		Button buttonMergeFileChoose = new Button(grpMergeFile, SWT.NONE);
+		buttonMergeFileChoose.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseUp(MouseEvent e) {
+				try {
+					FileDialog fdl = new FileDialog(shlSplitMerge);
+					String filename = fdl.open();
+					textMergeFileChoose.setText(filename);
+					textMergeFolderChoose.setText(Function.getFolderNameFromPath(filename));
+				} catch (Exception exc) {
+					
+				}
+			}
+		});
+		buttonMergeFileChoose.setText("...");
+		buttonMergeFileChoose.setBounds(603, 40, 30, 30);
+		
+		Group grpMergeFolder = new Group(composite, SWT.NONE);
+		grpMergeFolder.setText("Choose Folder");
+		grpMergeFolder.setBounds(10, 94, 643, 78);
+		
+		textMergeFolderChoose = new Text(grpMergeFolder, SWT.BORDER);
+		textMergeFolderChoose.setBounds(10, 42, 587, 26);
+		
+		Button buttonMergeFolderChoose = new Button(grpMergeFolder, SWT.NONE);
+		buttonMergeFolderChoose.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseUp(MouseEvent e) {
+				try {
+					DirectoryDialog ddl = new DirectoryDialog(shlSplitMerge);
+					String folder = ddl.open();
+					textMergeFolderChoose.setText(folder);
+				} catch (Exception exc) {
+					
+				}
+			}
+		});
+		buttonMergeFolderChoose.setText("...");
+		buttonMergeFolderChoose.setBounds(603, 40, 30, 30);
+		
+		ProgressBar progressBar_1 = new ProgressBar(composite, SWT.NONE);
+		progressBar_1.setMaximum(100);
+		progressBar_1.setBounds(10, 414, 643, 21);
+		
+		Button buttonMerge = new Button(composite, SWT.NONE);
+		buttonMerge.setText("Merge");
+		buttonMerge.setBounds(279, 178, 90, 30);
 
 		shlSplitMerge.open();
 		shlSplitMerge.layout();
