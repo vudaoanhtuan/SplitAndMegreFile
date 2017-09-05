@@ -34,14 +34,14 @@ public class Split {
 //		}
 //	}
 	
-	public static void splitByPart(String file, String folder, int nPart) throws IOException {
+	public static void splitByPart(String filePath, String folder, int nPart) throws IOException {
 		try {
-			File f = new File(file);
-			FileInputStream fis = new FileInputStream(f);
+			File file = new File(filePath);
+			FileInputStream fis = new FileInputStream(file);
 			
 			long partSize = file.length() / nPart;
 			
-			String filename = Function.getFileNameFromPath(file);
+			String filename = Function.getFileNameFromPath(filePath);
 			
 			String partName = folder;
 			if (folder.charAt(folder.length() - 1) != '/')
