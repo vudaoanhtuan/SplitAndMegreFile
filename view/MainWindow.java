@@ -99,6 +99,8 @@ public class MainWindow {
 		grpChoose.setBounds(10, 178, 643, 119);
 		
 		Button radioSplitPart = new Button(grpChoose, SWT.RADIO);
+		radioSplitPart.setSelection(true);
+		splitBy = 1;
 		radioSplitPart.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
@@ -114,9 +116,11 @@ public class MainWindow {
 		
 		Spinner spinnerPart = new Spinner(grpChoose, SWT.BORDER);
 		spinnerPart.setBounds(131, 33, 59, 26);
+		spinnerPart.setValues(3, 2, 999, 0, 1, 10);
 		
-		Spinner spinneSize = new Spinner(grpChoose, SWT.BORDER);
-		spinneSize.setBounds(131, 75, 128, 26);
+		Spinner spinnerSize = new Spinner(grpChoose, SWT.BORDER);
+		spinnerSize.setBounds(131, 75, 128, 26);
+		spinnerSize.setValues(100, 1, 9999999, 0, 100, 1000);
 		
 		Label lblPart = new Label(grpChoose, SWT.NONE);
 		lblPart.setBounds(196, 33, 70, 20);
@@ -135,7 +139,7 @@ public class MainWindow {
 			public void mouseUp(MouseEvent arg0) {
 				String filePath = textInputFile.getText();
 				String folderPath = textOutputFolder.getText();
-				int nPart = Integer.valueOf(spinnerPart.getText());
+				int nPart = spinnerPart.getSelection();
 				System.out.println(nPart);
 				System.out.println(splitBy);
 				if (splitBy == 1) {
