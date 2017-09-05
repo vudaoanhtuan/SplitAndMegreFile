@@ -229,6 +229,10 @@ public class MainWindow {
 		textMergeFolderChoose = new Text(grpMergeFolder, SWT.BORDER);
 		textMergeFolderChoose.setBounds(10, 42, 587, 26);
 		
+		ProgressBar progressBarMerge = new ProgressBar(composite, SWT.NONE);
+		progressBarMerge.setMaximum(100);
+		progressBarMerge.setBounds(10, 414, 643, 21);
+		
 		Button buttonMergeFolderChoose = new Button(grpMergeFolder, SWT.NONE);
 		buttonMergeFolderChoose.addMouseListener(new MouseAdapter() {
 			@Override
@@ -245,17 +249,13 @@ public class MainWindow {
 		buttonMergeFolderChoose.setText("...");
 		buttonMergeFolderChoose.setBounds(603, 40, 30, 30);
 		
-		ProgressBar progressBar_1 = new ProgressBar(composite, SWT.NONE);
-		progressBar_1.setMaximum(100);
-		progressBar_1.setBounds(10, 414, 643, 21);
-		
 		Button buttonMerge = new Button(composite, SWT.NONE);
 		buttonMerge.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseUp(MouseEvent e) {
 				String pathFile = textMergeFileChoose.getText();
 				String pathFolder = textMergeFolderChoose.getText();
-				Merge.merge(pathFile, pathFolder);
+				Merge.merge(pathFile, pathFolder, progressBarMerge);
 			}
 		});
 		buttonMerge.setText("Merge");
