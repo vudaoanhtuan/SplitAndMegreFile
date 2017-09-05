@@ -41,10 +41,15 @@ public class Split {
 			
 			long partSize = file.length() / nPart;
 			
-			String filename = Fun.getFileNameFromPath(file);
+			String filename = Function.getFileNameFromPath(file);
+			
+			String partName = folder;
+			if (folder.charAt(folder.length() - 1) != '/')
+				partName = partName + '/';
+			partName = partName + filename;
 			
 			for (int i=1; i<nPart; i++) {
-				String fout = folder + filename + ".part" + i;
+				String fout = partName + ".part" + i;
 				FileOutputStream fos = new FileOutputStream(fout);
 				for (int j=0; j<partSize; j++) {
 					int b = fis.read();
@@ -53,7 +58,7 @@ public class Split {
 				fos.close();
 			}
 			
-			String fout = folder + filename + ".part" + nPart;
+			String fout = partName + ".part" + nPart;
 			FileOutputStream fos = new FileOutputStream(fout);
 			int b;
 			while ((b = fis.read()) != -1)

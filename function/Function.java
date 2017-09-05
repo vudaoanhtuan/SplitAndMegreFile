@@ -4,26 +4,12 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 
-public class InitFunction {
-
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-		String path = "D:\\Tool\\FFSJ\\FFSJ.exe";
-		String[] list = path.split("[/\\\\]");
-		System.out.println(list.length);
-//		System.out.println(list[list.length - 1]);
-//		System.out.println(path);
-	}
-
-}
-
-class Fun {
+public class Function {
 	static String getFileNameFromPath(String path) {
 		String[] list = path.split("[/\\\\]");
 		return list[list.length - 1];
 	}
 }
-
 
 
 class Merge {
