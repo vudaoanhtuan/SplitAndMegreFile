@@ -7,7 +7,6 @@ import java.io.IOException;
 
 import org.eclipse.swt.widgets.ProgressBar;
 
-import view.MainWindow;
 
 public class Split {
 //	static void split(String filename, int n) {
@@ -61,10 +60,10 @@ public class Split {
 				for (int j=0; j<partSize; j++) {
 					int b = fis.read();
 					fos.write(b);
-					percent++;
-					bar.setSelection(percent);
 				}
 				fos.close();
+				percent += partSize;
+				bar.setSelection(percent);
 			}
 			
 			String fout = partName + ".part" + nPart;
@@ -73,8 +72,56 @@ public class Split {
 			while ((b = fis.read()) != -1) {
 				fos.write(b);
 				percent++;
+			}
+			bar.setSelection(percent);
+			
+			fos.close();
+			
+			fis.close();
+		} catch (IOException e) {
+			throw e;
+		}
+		System.out.println("Done!");
+		
+	}
+	
+	public static void splitBySize(String filePath, String folder, int partSize, ProgressBar bar) throws IOException {
+		try {
+			File file = new File(filePath);
+			FileInputStream fis = new FileInputStream(file);
+			
+			int nPart = (int) file.length() / partSize + 1;
+			bar.setMaximum((int) file.length());
+			
+			int percent = 0;
+			
+			String filename = Function.getFileNameFromPath(filePath);
+			
+			String partName = folder;
+			if (folder.charAt(folder.length() - 1) != '/')
+				partName = partName + '/';
+			partName = partName + filename;
+			
+			for (int i=1; i<nPart; i++) {
+				String fout = partName + ".part" + i;
+				FileOutputStream fos = new FileOutputStream(fout);
+				for (int j=0; j<partSize; j++) {
+					int b = fis.read();
+					fos.write(b);
+				}
+				fos.close();
+				percent += partSize;
 				bar.setSelection(percent);
 			}
+			
+			String fout = partName + ".part" + nPart;
+			FileOutputStream fos = new FileOutputStream(fout);
+			int b;
+			while ((b = fis.read()) != -1) {
+				fos.write(b);
+				percent++;
+			}
+			bar.setSelection(percent);
 			
 			fos.close();
 			

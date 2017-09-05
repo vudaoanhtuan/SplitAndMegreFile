@@ -112,6 +112,12 @@ public class MainWindow {
 		radioSplitPart.setText("Split into");
 		
 		Button radioSplitSize = new Button(grpChoose, SWT.RADIO);
+		radioSplitSize.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				splitBy = 2;
+			}
+		});
 		radioSplitSize.setBounds(10, 78, 111, 20);
 		radioSplitSize.setText("Split every");
 		
@@ -144,13 +150,22 @@ public class MainWindow {
 			public void mouseUp(MouseEvent arg0) {
 				String filePath = textInputFile.getText();
 				String folderPath = textOutputFolder.getText();
-				int nPart = spinnerPart.getSelection();
-				System.out.println(nPart);
-				System.out.println(splitBy);
 				if (splitBy == 1) {
 					try {
+						int nPart = spinnerPart.getSelection();
 						System.out.println("Spliting");
 						Split.splitByPart(filePath, folderPath, nPart, progressBar);
+						
+					} catch (Exception e) {
+						MessageBox mess = new MessageBox(shlSplitMerge, SWT.OK | SWT.ICON_WARNING);
+						mess.setText("Error!");
+						mess.open();
+					}
+				} else if (splitBy == 2) {
+					try {
+						int partSize = spinnerSize.getSelection() * 1024 * 1024;
+						System.out.println("Spliting");
+						Split.splitBySize(filePath, folderPath, partSize, progressBar);
 						
 					} catch (Exception e) {
 						MessageBox mess = new MessageBox(shlSplitMerge, SWT.OK | SWT.ICON_WARNING);
@@ -167,7 +182,7 @@ public class MainWindow {
 			public void widgetSelected(SelectionEvent arg0) {
 			}
 		});
-		btnSplit.setBounds(290, 303, 90, 30);
+		btnSplit.setBounds(282, 303, 90, 30);
 		btnSplit.setText("Split");
 		
 
