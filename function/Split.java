@@ -5,6 +5,10 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
+import org.eclipse.swt.widgets.ProgressBar;
+
+import view.MainWindow;
+
 public class Split {
 //	static void split(String filename, int n) {
 //		try {
@@ -34,12 +38,15 @@ public class Split {
 //		}
 //	}
 	
-	public static void splitByPart(String filePath, String folder, int nPart) throws IOException {
+	public static void splitByPart(String filePath, String folder, int nPart, ProgressBar bar) throws IOException {
 		try {
 			File file = new File(filePath);
 			FileInputStream fis = new FileInputStream(file);
 			
 			long partSize = file.length() / nPart;
+			bar.setMaximum((int) file.length());
+			
+			int percent = 0;
 			
 			String filename = Function.getFileNameFromPath(filePath);
 			
@@ -54,6 +61,8 @@ public class Split {
 				for (int j=0; j<partSize; j++) {
 					int b = fis.read();
 					fos.write(b);
+					percent++;
+					bar.setSelection(percent);
 				}
 				fos.close();
 			}
@@ -61,8 +70,11 @@ public class Split {
 			String fout = partName + ".part" + nPart;
 			FileOutputStream fos = new FileOutputStream(fout);
 			int b;
-			while ((b = fis.read()) != -1)
+			while ((b = fis.read()) != -1) {
 				fos.write(b);
+				percent++;
+				bar.setSelection(percent);
+			}
 			
 			fos.close();
 			
@@ -71,5 +83,6 @@ public class Split {
 			throw e;
 		}
 		System.out.println("Done!");
+		
 	}
 }

@@ -28,6 +28,7 @@ public class MainWindow {
 	private static Text textInputFile;
 	private static Text textOutputFolder;
 	private static int splitBy;
+	private static int percent;
 	/**
 	 * Launch the application.
 	 * @param args
@@ -130,6 +131,10 @@ public class MainWindow {
 		lblMbmegaByte.setBounds(265, 78, 140, 20);
 		lblMbmegaByte.setText("MB (Mega Byte)");
 		
+		ProgressBar progressBar = new ProgressBar(composite, SWT.NONE);
+		progressBar.setMaximum(100);
+		progressBar.setBounds(10, 414, 643, 21);
+		
 		Button btnSplit = new Button(composite, SWT.NONE);
 		
 		
@@ -145,7 +150,7 @@ public class MainWindow {
 				if (splitBy == 1) {
 					try {
 						System.out.println("Spliting");
-						Split.splitByPart(filePath, folderPath, nPart);
+						Split.splitByPart(filePath, folderPath, nPart, progressBar);
 						
 					} catch (Exception e) {
 						MessageBox mess = new MessageBox(shlSplitMerge, SWT.OK | SWT.ICON_WARNING);
@@ -165,8 +170,10 @@ public class MainWindow {
 		btnSplit.setBounds(290, 303, 90, 30);
 		btnSplit.setText("Split");
 		
-		ProgressBar progressBar = new ProgressBar(composite, SWT.NONE);
-		progressBar.setBounds(10, 414, 643, 21);
+
+		
+		
+		
 		
 		TabItem tabMerge = new TabItem(tabFolder, SWT.NONE);
 		tabMerge.setText("Merge");
