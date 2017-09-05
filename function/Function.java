@@ -18,29 +18,10 @@ public class Function {
 		}
 		return path.substring(0, linux);
 	}
-}
-
-
-class Merge {
-	static void merge(String filename, int n) {
-		
-		try {
-			File file = new File(filename);
-			FileOutputStream origin = new FileOutputStream(file);
-			
-			for (int i=1; i<n+1; i++) {
-				String fin = filename + ".part" + i;
-				FileInputStream fis = new FileInputStream(fin);
-				
-				int b;
-				while ((b=fis.read()) != -1)
-					origin.write(b);
-				fis.close();
-			}
-			
-			origin.close();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+	
+	public static String getOriginFileName(String name) {
+		int pos = name.lastIndexOf(".part");
+		return name.substring(0, pos);
 	}
 }
+

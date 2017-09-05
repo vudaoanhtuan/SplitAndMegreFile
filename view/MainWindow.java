@@ -250,6 +250,14 @@ public class MainWindow {
 		progressBar_1.setBounds(10, 414, 643, 21);
 		
 		Button buttonMerge = new Button(composite, SWT.NONE);
+		buttonMerge.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseUp(MouseEvent e) {
+				String pathFile = textMergeFileChoose.getText();
+				String pathFolder = textMergeFolderChoose.getText();
+				Merge.merge(pathFile, pathFolder);
+			}
+		});
 		buttonMerge.setText("Merge");
 		buttonMerge.setBounds(279, 178, 90, 30);
 
