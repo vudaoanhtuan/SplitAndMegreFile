@@ -60,8 +60,9 @@ public class MainWindow {
 			public void mouseUp(MouseEvent arg0) {
 				FileDialog fileOpen = new FileDialog(shlSplitMerge);
 				try {
-					String part = fileOpen.open();
-					textInputFile.setText(part);
+					String path = fileOpen.open();
+					textInputFile.setText(path);
+					textOutputFolder.setText(Function.getFolderNameFromPath(path));
 				} catch (Exception e) {
 					// do nothing
 				}
