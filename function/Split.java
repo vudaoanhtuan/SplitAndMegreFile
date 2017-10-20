@@ -5,10 +5,15 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
+import javax.swing.text.AbstractDocument.LeafElement;
+
 import org.eclipse.swt.widgets.ProgressBar;
 
 
 public class Split {
+	static final int bufferSize = 1000000;
+	static byte[] buffer = new byte[bufferSize];
+	static int lenBuffer;
 //	static void split(String filename, int n) {
 //		try {
 //			File file = new File(filename);
@@ -38,6 +43,7 @@ public class Split {
 //	}
 	
 	public static void splitByPart(String filePath, String folder, int nPart, ProgressBar bar) throws IOException {
+		
 		try {
 			File file = new File(filePath);
 			FileInputStream fis = new FileInputStream(file);
@@ -54,29 +60,31 @@ public class Split {
 				partName = partName + '/';
 			partName = partName + filename;
 			
-			for (int i=1; i<nPart; i++) {
+			for (int i=1; i<nPart+1; i++) {
+				lenBuffer = 0;
+				
 				String fout = partName + ".part" + i;
 				FileOutputStream fos = new FileOutputStream(fout);
-				for (int j=0; j<partSize; j++) {
-					int b = fis.read();
-					fos.write(b);
+
+				long curPartSize = partSize;
+				
+				while (curPartSize > 1) {
+					fis.read(buffer, 0, (int) Math.min(curPartSize, bufferSize));
+					fos.write(buffer, 0, (int) Math.min(curPartSize, bufferSize));
+					curPartSize -= bufferSize;
 				}
+				if (i == nPart) {
+					int lenRead;
+					while ((lenRead = fis.read(buffer)) != -1) {
+						fos.write(buffer, 0, lenRead);
+					}
+				}
+				
 				fos.close();
 				percent += partSize;
 				bar.setSelection(percent);
 			}
-			
-			String fout = partName + ".part" + nPart;
-			FileOutputStream fos = new FileOutputStream(fout);
-			int b;
-			while ((b = fis.read()) != -1) {
-				fos.write(b);
-				percent++;
-			}
-			bar.setSelection(percent);
-			
-			fos.close();
-			
+	
 			fis.close();
 		} catch (IOException e) {
 			throw e;
@@ -103,11 +111,21 @@ public class Split {
 			partName = partName + filename;
 			
 			for (int i=1; i<nPart; i++) {
+				lenBuffer = 0;
 				String fout = partName + ".part" + i;
 				FileOutputStream fos = new FileOutputStream(fout);
 				for (int j=0; j<partSize; j++) {
+					if (lenBuffer == bufferSize-1) {
+						fos.write(buffer, 0, lenBuffer);
+						lenBuffer = 0;
+					}
 					int b = fis.read();
-					fos.write(b);
+					
+					lenBuffer++;
+					buffer[lenBuffer - 1] = (byte) b;
+				}
+				if (lenBuffer > 0) {
+					fos.write(buffer, 0, lenBuffer);
 				}
 				fos.close();
 				percent += partSize;
