@@ -9,6 +9,8 @@ import org.eclipse.swt.widgets.ProgressBar;
 import function.Function;
 
 public class Merge {
+	static final int bufferSize = 1000000;
+	static byte[] buffer = new byte[bufferSize];
 	public static void merge(String pathFile, String folder, ProgressBar bar) {
 		try {
 			String fileName = Function.getFileNameFromPath(pathFile);
@@ -29,26 +31,25 @@ public class Merge {
 			}
 			n--;
 			
-			FileOutputStream origin = new FileOutputStream(fullOriginPath);
+			
+			FileOutputStream originFile = new FileOutputStream(fullOriginPath);
 			
 			int percent = 0;
 			bar.setMaximum(size);
 			
+			
+			int lenBuffer = 0;
+			
 			for (int i=1; i<n+1; i++) {
 				String fin = fullOriginPath + ".part" + i;
 				FileInputStream fis = new FileInputStream(fin);
-				
-				int b;
-				while ((b=fis.read()) != -1) {
-					origin.write(b);
-					percent++;
+				int lenRead;
+				while ((lenRead = fis.read(buffer)) != -1) {
+					originFile.write(buffer, 0, lenRead);
 				}
-				
-				bar.setSelection(percent);
 				fis.close();
 			}
-			
-			origin.close();
+			originFile.close();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
